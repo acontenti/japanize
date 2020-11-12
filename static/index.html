@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Japanize</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet"
+		  type="text/css">
+	<link href="https://cdn.jsdelivr.net/npm/quasar@1.14.3/dist/quasar.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<q-app id="app">
+	<q-layout view="hHh lpR fFf">
+		<q-page-container>
+			<q-page>
+				<h1 style="text-align: center">Japanize</h1>
+				<q-form @submit="japanize" class="q-gutter-md flex column flex-center">
+					<q-input outlined v-model="names" label="Name" maxlength="50"></q-input>
+					<q-btn :loading="loading" label="Japanize" color="primary" type="submit"></q-btn>
+					<span class="text-bold text-body1">{{result.romaji}}</span>
+					<span class="text-body1">{{result.hiragana}}</span>
+				</q-form>
+			</q-page>
+		</q-page-container>
+	</q-layout>
+</q-app>
+<script src="https://unpkg.com/axios@0.21.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@^2.0.0/dist/vue.min.js"></script>
+<script>
+	window.quasarConfig = {
+		brand: {
+			primary: '#027BE3',
+			secondary: '#26A69A',
+			accent: '#9C27B0',
+			dark: '#1d1d1d',
+			positive: '#21BA45',
+			negative: '#C10015',
+			info: '#31CCEC',
+			warning: '#F2C037'
+		}
+	}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/quasar@1.14.3/dist/quasar.umd.min.js"></script>
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			names: '',
+			result: {
+				romaji: "",
+				hiragana: ""
+			},
+			loading: false
+		},
+		methods: {
+			japanize() {
+				this.loading = true;
+				axios.get("/api/japanize/" + encodeURIComponent(this.names))
+					.then(value => {
+						this.result.romaji = value.data.map(it => it.romaji).join(" ");
+						this.result.hiragana = value.data.map(it => it.hiragana).join(" ");
+					})
+					.catch(reason => alert(reason))
+					.finally(() => this.loading = false);
+			}
+		}
+	});
+</script>
+</body>
+</html>
