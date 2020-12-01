@@ -2,14 +2,14 @@
 	"version": 2,
 	"builds": [
 		{
-			"src": "./japanize_server.py",
+			"src": "japanize_server.py",
 			"use": "@vercel/python"
 		}
 	],
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "/"
+			"dest": "/japanize_server.py"
 		}
 	]
 }

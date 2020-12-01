@@ -57,7 +57,7 @@
 		methods: {
 			japanize() {
 				this.loading = true;
-				axios.get("/api/japanize/" + encodeURIComponent(this.names))
+				axios.get("/" + encodeURIComponent(this.names))
 					.then(value => {
 						this.result.romaji = value.data.map(it => it.romaji).join(" ");
 						this.result.hiragana = value.data.map(it => it.hiragana).join(" ");
